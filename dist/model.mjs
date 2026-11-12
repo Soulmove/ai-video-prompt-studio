@@ -15,7 +15,7 @@ export function makeProject(templateId='lake'){
  const s=scene(t.scene);s.weather=t.weather;s.time=t.time;
  if(t.theme==='coffee'){s.description='有生活痕迹的木质桌椅，靠窗空间，材质自然';s.foreground='木桌和杯沿';s.background='窗外街道柔和虚化';s.entrance='窗户在左侧，入口在后方';s.dynamics='杯中热气缓慢升起';s.sound='远处街声与轻微室内底声';s.lightSource='window';s.lightDirection='side';}
  if(t.theme==='night'){s.description='潮湿地面，空间向远处延伸，局部暖色实景灯';s.background='远处灯光与阴影';s.dynamics='细雨落下，灯光映在地面';s.sound='雨声与远处交通声';s.lightSource='neon';}
- const p={version:VERSION,id:uid(),title:t.id==='lake'?'未说出口的夏天':t.name,logline:t.desc||'一个人物，一次行动，一次关系的变化。',templateId:t.id,theme:t.theme,mode:'quick',targetDuration:15,timing:'ordered',platform:'通用自然语言',format:'9:16',resolution:'4K',customWidth:2160,customHeight:3840,fps:24,customFormat:'9:16',customFps:24,language:'zh',output:'full',timingOutput:'seconds',subtitles:'none',screenText:'',restrictions:'动作自然，人物身份、发型与所选造型保持一致；不添加未指定人物或对白。',style:{look:'cinema',medium:'35mm',genre:t.genre,color:t.theme==='night'?'cool':'warm',texture:['skin','grain','soft'],intensity:65,custom:''},camera:cameraDefaults(),characters:[a,b],scenes:[s],props:[{id:uid(),name:['wuxia','fantasy'].includes(t.id)?'折叠密信':'折叠信纸',appearance:'米白色纸张，对折，边角略有磨损',ownerId:a.id}],shots:[],references:[],customOptions:{},createdAt:Date.now(),updatedAt:Date.now()};
+ const p={version:VERSION,id:uid(),title:t.id==='lake'?'未说出口的夏天':t.name,logline:t.desc||'一个人物，一次行动，一次关系的变化。',templateId:t.id,theme:t.theme,mode:'quick',targetDuration:15,timing:'ordered',platform:'通用自然语言',format:'9:16',resolution:'4K',customWidth:2160,customHeight:3840,fps:24,customFormat:'9:16',customFps:24,language:'zh',output:'full',timingOutput:'seconds',subtitles:'none',screenText:'',negativePrompts:[],restrictions:'动作自然，人物身份、发型与所选造型保持一致；不添加未指定人物或对白。',style:{look:'cinema',medium:'35mm',genre:t.genre,color:t.theme==='night'?'cool':'warm',texture:['skin','grain','soft'],intensity:65,custom:''},camera:cameraDefaults(),characters:[a,b],scenes:[s],props:[{id:uid(),name:['wuxia','fantasy'].includes(t.id)?'折叠密信':'折叠信纸',appearance:'米白色纸张，对折，边角略有磨损',ownerId:a.id}],shots:[],references:[],customOptions:{},createdAt:Date.now(),updatedAt:Date.now()};
  t.actions.forEach((action,i)=>{const shot=makeShot(p);Object.assign(shot,{title:t.titles[i],duration:t.durations[i],manualStart:t.durations.slice(0,i).reduce((a,b)=>a+b,0),action,purpose:['交代空间','揭示信息','承接反应'][i],startState:i===0?'林夏站在步道旁，右手握着折叠信纸':'',endState:['人物停下，右手仍握着折叠信纸','人物已回头，视线停在画外，右手仍握着信纸','人物保持站立，右手握信纸，视线停在画外'][i],handStart:'right',handEnd:'right',propStart:'折叠',propEnd:'折叠',camera:{framing:['mediumFull','mediumClose','medium'][i],move:['track','push','fixed'][i]},audio:i===1?'画外一声呼唤“林夏”，随后回到风声与水声':'',emotion:i===2?'hesitate':'restrained'});shot.generationDuration=shot.duration+2;shot.trimOut=shot.duration+1;p.shots.push(shot);});
  const prop=p.props[0];p.shots[0].startState=`${a.name}位于${s.name}，右手握着${prop.name}。`;
  const ends={mystery:['人物停在门前，右手仍握着折叠信纸','人物低头看信纸封口，右手保持持物','信纸停在人物眼前，尚未展开，人物仍在门前'],wuxia:['人物站定在石桥中央，右手握密信','人物回头望向桥头画外，右手握密信','人物站稳，密信贴近身侧，仍在右手'],family:['人物站在门边，右手握信纸','门已打开，人物左手扶门，右手握信纸','人物停在门槛外回头，右手仍握信纸'],reversal:['人物站在宴会厅门口，邀请函在右手','邀请函在胸前展开，由右手持有','邀请函已收好，人物进入宴会厅'],chase:['人物到达巷道拐角，右手握信纸','人物贴墙停住，右手仍握信纸','人物看向巷口，信纸握在右手'],cyber:['人物站在天桥栏杆旁，右手握信纸','人物侧头看城市，信纸仍在右手','信纸贴近胸前，由右手持有，视线朝向远处'],document:['人物走到早餐铺前，右手握信纸','人物停下看蒸汽，右手仍握信纸','人物侧身让出通道，右手仍握信纸'],product:['信纸位于桌面中央，人物右手已经松开','信纸在桌面展开，右手指尖停在边缘','信纸平展于桌面，人物右手已移开'],reunion:['人物站在站台边，右手握信纸','人物回头寻找声音，右手仍握信纸','人物站在原地微笑，视线落在画外，信纸在右手'],fantasy:['人物站在石阶上，右手握密信','人物转身看向石阶下方，密信仍在右手','人物望向画外，右手稍放松但仍握密信']};
@@ -80,7 +80,7 @@ export function shotPrompt(p,i,{lang=p.language,brief=false,timing=true}={}){
  const prop=p.props.find(x=>x.id===s.propId);if(prop&&s.handEnd!=='unknown')lines.push(`${en?'Prop continuity':'道具连续性'}：${prop.name}，${prop.appearance}；${handLabel(startHand(p,i),lang)} → ${handLabel(s.handEnd,lang)}${s.propEnd?'，'+s.propEnd:''}`);
  if(s.referenceIds.length&&!brief)lines.push(referenceList(p,s,lang));return lines.filter(Boolean).join('\n');
 }
-export function generate(p,selected=0,mode=p.output,lang=p.language){
+function generateBody(p,selected=0,mode=p.output,lang=p.language){
  if(p.mode==='commerce')return commercePrompt(p);
  if(p.fromScratch)return sparsePrompt(p,selected,mode,opt,cameraText,characterText,sceneText,startState);
  const en=lang==='en',timing=p.timingOutput!=='shots';
@@ -95,8 +95,20 @@ export function generate(p,selected=0,mode=p.output,lang=p.language){
  if(mode!=='short')sections.push(`${en?'CHARACTERS':'角色与造型'}\n${p.characters.filter(c=>p.shots.some(s=>s.characterIds.includes(c.id))).map(c=>`${characterText(c,false,lang)}。${c.variant}；${Object.entries(c.locks).filter(([k,v])=>v).map(([k])=>({appearance:'外貌',hair:'发型',outfit:'服装',voice:'声音'}[k])).join('、')}保持一致。`).join('\n')}`);
  sections.push(`${en?'SHOT SEQUENCE':'逐镜安排'}\n${p.shots.map((s,i)=>shotPrompt(p,i,{lang,brief:mode==='short',timing})).join('\n\n')}`);
  sections.push(`${en?'FRAME REQUIREMENTS':'画面要求'}\n${p.subtitles==='none'?(en?'No dialogue subtitles or title overlays.':'不叠加对白字幕与标题。'):p.subtitles==='post'?'对白字幕后期添加。':'按指定内容添加字幕。'}${p.screenText?'\n指定画内文字：'+p.screenText:''}\n${p.restrictions}`);
- sections.push(`${en?'DELIVERY TARGET / set on the generation platform when supported':'交付目标 / 支持时在生成平台设置'}\n${aspect(p)} · ${p.resolution} (${resolution(p)}) · ${frameRate(p)}fps · ${fmt(totalDuration(p))}s\n${en?'Actual native resolution and timing depend on the generation platform.':'原生画质、时长与精确秒数执行取决于目标平台。'}${p.platform!=='通用自然语言'?'\n'+p.platform+'：当前使用通用自然语言格式，平台能力与素材语法需在提交前核对。':''}`);
  return sections.join('\n\n');
+}
+export function promptParameters(p,selected=0,mode=p.output,lang=p.language){
+ const image=p.mode==='commerce'?p.commerce?.output==='image':['first','last'].includes(mode);
+ const duration=p.mode==='commerce'?Math.max(0,...(p.commerce?.beats||[]).map(b=>n(b.end)))||n(p.targetDuration):mode==='shot'?n(p.shots[selected]?.duration):totalDuration(p)||n(p.targetDuration);
+ const dimensions=`${aspect(p)} · ${p.resolution} (${resolution(p)})`;
+ return (lang==='en'?'Output requirements: ':'画面规格：')+dimensions+(image?'':` · ${frameRate(p)}fps · ${fmt(duration)}s`);
+}
+export function generate(p,selected=0,mode=p.output,lang=p.language){
+ const body=generateBody(p,selected,mode,lang);
+ if(['table','refs','plan'].includes(mode)&&p.mode!=='commerce')return body;
+ const negatives=(p.negativePrompts||[]).map(id=>opt(p,'negative',id,lang)).filter(Boolean);
+ if(!body.trim()&&!negatives.length&&!p.specsChosen)return '';
+ return [promptParameters(p,selected,mode,lang),body,negatives.length?(lang==='en'?'NEGATIVE PROMPT — avoid: ':'负面提示词 — 避免：')+[...new Set(negatives)].join('；'):''].filter(Boolean).join('\n\n');
 }
 export function checkProject(p){
  if(p.mode==='commerce'){const c=p.commerce||commerceDefaults();return c.beats.flatMap((b,i)=>Number(b.end)<=Number(b.start)?[{id:'commerce-'+i,severity:'error',title:'广告分段时间无效',detail:'结束秒数须大于开始秒数。',index:null,field:''}]:[]);}
@@ -143,7 +155,7 @@ export function validateImport(value){
  for(const c of p.characters){if(typeof c.name!=='string'||!c.locks)throw Error('角色格式不完整。');}
  for(const r of p.references){if(r.data&&!/^data:(image\/(png|jpeg|webp|gif)|audio\/[a-z0-9.+-]+|video\/[a-z0-9.+-]+);base64,/i.test(r.data))throw Error('参考素材类型不受支持。');}
  if(!Array.isArray(p.style.texture)||!p.scenes.every(s=>typeof s.name==='string')||!p.shots.every(s=>['startState','endState','dialogue','audio','music','propId','purpose'].every(k=>typeof s[k]==='string')))throw Error('项目字段类型不完整。');
- const q=clone(p);q.scenes.forEach(s=>s.layout??=scene().layout);q.customFormat??='9:16';q.customFps??=24;q.characters.forEach(c=>c.identityId??=c.id);q.shots.forEach(s=>{s.generationDuration??=n(s.duration)+2;s.trimIn??=1;s.trimOut??=n(s.duration)+1;});try{checkProject(q);generate(q);}catch{throw Error('项目设置结构不完整，请导入镜序导出的JSON。');}return q;
+ const q=clone(p);q.negativePrompts??=[];if(!Array.isArray(q.negativePrompts)||!q.negativePrompts.every(x=>typeof x==='string'))throw Error('负面提示词必须为词条列表。');q.scenes.forEach(s=>s.layout??=scene().layout);q.customFormat??='9:16';q.customFps??=24;q.characters.forEach(c=>c.identityId??=c.id);q.shots.forEach(s=>{s.generationDuration??=n(s.duration)+2;s.trimIn??=1;s.trimOut??=n(s.duration)+1;});try{checkProject(q);generate(q);}catch{throw Error('项目设置结构不完整，请导入镜序导出的JSON。');}return q;
 }
 export function csv(p){const rows=[['镜号','开始秒','结束秒','镜头名','职责','动作','起点','终点','对白'],...timeline(p).map((t,i)=>{const s=p.shots[i];return [i+1,t.start,t.end,s.title,s.purpose,s.action,startState(p,i),s.endState,s.dialogue];})];return '\uFEFF'+rows.map(row=>row.map(x=>'"'+String(x??'').replaceAll('"','""')+'"').join(',')).join('\r\n');}
 export function splitShot(p,index,at){const s=p.shots[index];if(!s||at<=0||at>=n(s.duration))throw Error('拆分点必须位于镜头内部。');if(s.dialogue||s.segments.length)throw Error('含对白或时间段的镜头，请先手动安排内容归属，再拆镜，避免误改时序。');const second=clone(s);second.id=uid();second.title=s.title+' · 后半';second.duration=n(s.duration)-at;second.manualStart=n(s.manualStart)+at;second.inheritStart=true;second.startState='';s.duration=at;s.endState='待补充拆分点状态';p.shots.splice(index+1,0,second);return second;}

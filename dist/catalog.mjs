@@ -1,6 +1,28 @@
 export const VERSION = 1;
 const option=(id,label,zh,en,tip='')=>({id,label,zh,en,tip:tip||zh});
 export const GROUPS={
+ negative:{label:'负面提示词',multi:true,hint:'选择需要避免的问题，可多选，也可自定义；这些是生成要求。',options:[
+ option("identity","身份漂移","人物身份或五官在镜头间漂移","identity or facial features drifting between shots"),
+option("wardrobe","突然换装","未经交代的换装或发型变化","unmotivated wardrobe or hairstyle changes"),
+option("skin","塑料肤质","过度磨皮、塑料皮肤与蜡像质感","over-smoothed plastic or waxy skin"),
+option("hands","手指畸形","多余或缺失手指、手部结构畸形","extra or missing fingers and malformed hands"),
+option("limbs","多余肢体","多余肢体、重复人物或人体结构异常","extra limbs, duplicate people or distorted anatomy"),
+option("motion","僵硬动作","僵硬动作、滑步和不符合物理的运动","stiff motion, foot sliding and implausible physics"),
+option("clipping","物体穿模","身体与道具穿模或相互融合","body or prop clipping and merging"),
+option("props","道具突变","道具凭空出现、消失或形状突变","props appearing, disappearing or changing shape without cause"),
+option("flicker","画面闪烁","画面闪烁、曝光跳变和颜色漂移","flicker, exposure jumps and color drift"),
+option("warp","背景扭曲","背景扭曲、建筑变形或空间不连续","warped backgrounds, distorted architecture or spatial discontinuity"),
+option("blur","模糊低清","无意的失焦、严重模糊与压缩噪点","unintended defocus, severe blur and compression noise"),
+option("sharp","过度锐化","过度锐化、边缘光晕与过强HDR","over-sharpening, edge halos and excessive HDR"),
+option("exposure","死白死黑","大面积高光死白与暗部细节丢失","blown highlights and crushed shadow detail"),
+option("shake","无意抖动","无意的镜头抖动与突然变焦","unintended camera shake and abrupt zoom"),
+option("text","多余文字","未指定的字幕、标题与乱码","unrequested subtitles, titles and garbled text"),
+option("watermark","水印标记","未指定的水印、角标或标识","unrequested watermarks, corner marks or logos"),
+option("dialogue","额外对白","未指定的对白、重复对白与旁白","unrequested or repeated dialogue and narration"),
+option("sync","音画错位","口型与对白错位、声音断裂","lip-sync mismatch and audio discontinuity"),
+option("product","商品变形","商品轮廓、包装颜色与已指定标识发生变化","changes to specified product silhouette, packaging color or markings"),
+option("music","配乐压人声","配乐盖过对白与突兀的音量变化","music overpowering speech and abrupt volume changes")
+ ]},
  look:{label:'摄影观感',hint:'选择画面如何被拍摄，预设会转成具体的视觉描述。',options:[
  option('cinema','电影摄影','电影摄影，自然透视，柔和高光过渡，保留暗部细节','cinematic photography, natural perspective, soft highlight roll-off, detailed shadows'),
  option('leica','徕卡风格人像','徕卡风格人像：自然温润肤色，清晰的局部明暗层次，柔和焦外','Leica-inspired portrait rendering, warm natural skin tones, nuanced local contrast, soft bokeh'),

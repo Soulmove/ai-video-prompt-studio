@@ -67,3 +67,6 @@ node --check dist/app.mjs
 | [UnderleveledBuilder/awesome-short-drama-skills](https://github.com/UnderleveledBuilder/awesome-short-drama-skills) | 资料目录和阶段分类 | CC0 1.0 |
 
 改编内容为网站中的字段组织、简化示例、原创预设、提示词组合方式及检查逻辑。没有将第三方仓库的“铁律”当作所有模型的保证，也没有复制仓库中的成品影片、图片或完整示例提示词。
+
+## V1.1 更新
+新增从零开始（首次使用为空项目）、紧凑单选下拉框、分组人物属性选择（支持自定义）、窄秒数输入和固定分镜工具栏。新增电商模式，提供商品主图、场景图、广告视频与分段脚本的规则整理。来源参考 fal-ai-community/skills 的 commercial、xianyu110/ecommerce-video-skills 的 hook-3s-script、vargHQ/ecommerce-ai-video-skills；只借鉴字段和创作方法，界面与组合逻辑独立实现，不复制成品提示词。

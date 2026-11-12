@@ -1,3 +1,4 @@
+import {sparsePrompt,commercePrompt,commerceDefaults} from './builder.mjs';
 import {GROUPS,TEMPLATES,VERSION} from './catalog.mjs';
 export const uid=()=>globalThis.crypto?.randomUUID?.()||`id-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 export const clone=x=>structuredClone(x);
@@ -42,7 +43,7 @@ const HAND_EN={right:'right hand',left:'left hand',both:'both hands',table:'on a
 export const handLabel=(id,lang='zh')=>(lang==='en'?HAND_EN:HAND)[id]||id;
 export function characterText(c,short=false,lang='zh'){
  const parts=short?[c.name,c.age,c.face,c.hairColor+' '+c.hair,c.outfit]:[c.name,c.age,c.gender,c.height,c.build,c.occupation,c.appearance,c.skin,c.face,c.eyes,c.brows,c.nose,c.lips,c.hairColor+' '+c.hair,c.makeup,c.outfit,c.accessories,c.habits];
- return parts.filter(Boolean).join(lang==='en'?', ':'，');
+ return parts.filter(x=>String(x||'').trim()).join(lang==='en'?', ':'，');
 }
 export function cameraText(p,s,lang='zh'){
  const c=camera(p,s),sep=lang==='en'?', ':'，';let text=['framing','angle','composition','lens','move'].map(k=>opt(p,k,c[k],lang));
@@ -80,6 +81,8 @@ export function shotPrompt(p,i,{lang=p.language,brief=false,timing=true}={}){
  if(s.referenceIds.length&&!brief)lines.push(referenceList(p,s,lang));return lines.filter(Boolean).join('\n');
 }
 export function generate(p,selected=0,mode=p.output,lang=p.language){
+ if(p.mode==='commerce')return commercePrompt(p);
+ if(p.fromScratch)return sparsePrompt(p,selected,mode,opt,cameraText,characterText,sceneText,startState);
  const en=lang==='en',timing=p.timingOutput!=='shots';
  if(mode==='first'||mode==='last')return framePrompt(p,selected,mode==='last',lang);
  if(mode==='shot')return [styleText(p,lang),shotPrompt(p,selected,{lang,timing}),p.subtitles==='none'?(en?'No dialogue subtitles or title overlays.':'不叠加对白字幕与标题。'):'',p.screenText?`指定画内文字：${p.screenText}`:'',p.restrictions].filter(Boolean).join('\n\n');
@@ -96,12 +99,13 @@ export function generate(p,selected=0,mode=p.output,lang=p.language){
  return sections.join('\n\n');
 }
 export function checkProject(p){
+ if(p.mode==='commerce'){const c=p.commerce||commerceDefaults();return c.beats.flatMap((b,i)=>Number(b.end)<=Number(b.start)?[{id:'commerce-'+i,severity:'error',title:'广告分段时间无效',detail:'结束秒数须大于开始秒数。',index:null,field:''}]:[]);}
  const out=[];const add=(severity,title,detail,index=null,field='',fix=null)=>out.push({id:`${index}-${field}-${title}`,severity,title,detail,index,field,fix});
  const t=timeline(p),total=totalDuration(p),diff=total-n(p.targetDuration);
  if(Math.abs(diff)>0.04)add('warning','成片时长与目标不同',`当前 ${fmt(total)} 秒，目标 ${fmt(p.targetDuration)} 秒，相差 ${fmt(Math.abs(diff))} 秒。`,null,'duration','matchTarget');
  if(!/^\d+(\.\d+)?:\d+(\.\d+)?$/.test(aspect(p))||aspect(p).split(':').some(x=>Number(x)<=0))add('error','画幅比例无效','请使用正数比例，例如9:16。');
  if(frameRate(p)<=0||frameRate(p)>240)add('error','帧率无效','请输入0到240之间的帧率。');
- if(!p.shots.length)add('error','还没有镜头','添加镜头后即可整理提示词。');
+ if(!p.shots.length&&!p.fromScratch&&p.mode!=='commerce')add('error','还没有镜头','添加镜头后即可整理提示词。');
  const seen=new Set();p.shots.forEach((s,i)=>{
   if(seen.has(s.id))add('error','镜头标识重复','请重新导入有效项目。',i);seen.add(s.id);
   if(!Number.isFinite(Number(s.duration))||n(s.duration)<=0)add('error','镜头时长必须大于零','修改本镜时长。',i,'duration');
@@ -144,3 +148,7 @@ export function validateImport(value){
 export function csv(p){const rows=[['镜号','开始秒','结束秒','镜头名','职责','动作','起点','终点','对白'],...timeline(p).map((t,i)=>{const s=p.shots[i];return [i+1,t.start,t.end,s.title,s.purpose,s.action,startState(p,i),s.endState,s.dialogue];})];return '\uFEFF'+rows.map(row=>row.map(x=>'"'+String(x??'').replaceAll('"','""')+'"').join(',')).join('\r\n');}
 export function splitShot(p,index,at){const s=p.shots[index];if(!s||at<=0||at>=n(s.duration))throw Error('拆分点必须位于镜头内部。');if(s.dialogue||s.segments.length)throw Error('含对白或时间段的镜头，请先手动安排内容归属，再拆镜，避免误改时序。');const second=clone(s);second.id=uid();second.title=s.title+' · 后半';second.duration=n(s.duration)-at;second.manualStart=n(s.manualStart)+at;second.inheritStart=true;second.startState='';s.duration=at;s.endState='待补充拆分点状态';p.shots.splice(index+1,0,second);return second;}
 export function mergeShots(p,index){const a=p.shots[index],b=p.shots[index+1];if(!a||!b)throw Error('需要相邻两个镜头。');if(a.sceneId!==b.sceneId)throw Error('不同场景不能直接合镜。');if(a.dialogue||b.dialogue||a.segments.length||b.segments.length)throw Error('含对白或时间段的镜头请先手动整理，避免合镜覆盖原始时序。');const d=n(a.duration);a.segments=[{id:uid(),start:0,end:d,action:a.action,dialogue:'',audio:a.audio},{id:uid(),start:d,end:d+n(b.duration),action:b.action,dialogue:'',audio:b.audio}];a.action=a.action+'\n'+b.action;a.duration=d+n(b.duration);a.endState=b.endState;a.handEnd=b.handEnd;a.propEnd=b.propEnd;a.characterIds=[...new Set([...a.characterIds,...b.characterIds])];a.referenceIds=[...new Set([...a.referenceIds,...b.referenceIds])];a.title+=' / '+b.title;p.shots.splice(index+1,1);}
+
+export function blankCharacter(name='角色A'){const c=character(name);for(const k of Object.keys(c))if(typeof c[k]==='string'&&!['id','identityId','name'].includes(k))c[k]='';for(const k of Object.keys(c.locks))c.locks[k]=false;return c;}
+export function blankScene(){const s=scene('新场景');for(const k of Object.keys(s))if(typeof s[k]==='string'&&!['id','name'].includes(k))s[k]='';return s;}
+export function makeBlankProject(){const p=makeProject();p.title='未命名项目';p.templateId='';p.fromScratch=true;p.logline='';p.restrictions='';p.style={look:'',medium:'',genre:'',color:'',texture:[],custom:''};for(const k of ['framing','angle','composition','move','speed','stability','lens','focus','rotation','zoom'])p.camera[k]='';p.camera.hold=0;p.characters=[];p.scenes=[];p.props=[];p.shots=[];p.commerce=commerceDefaults();return p;}

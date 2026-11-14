@@ -3,3 +3,6 @@ node_modules/
 *.log
 .sites-local/
 work/
+.env
+.env.*
+!.env.example

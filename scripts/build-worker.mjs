@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),dist=path.join(root,'dist');
+const hosting=JSON.parse(fs.readFileSync(path.join(root,'.openai/hosting.json'),'utf8'));
+if(hosting.static)throw Error('Worker deployment requires removing static from the source hosting manifest.');
+const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.jpg':'image/jpeg','.png':'image/png','.webp':'image/webp'};
+const assets={};function scan(dir){for(const x of fs.readdirSync(dir,{withFileTypes:true})){if(['server','.openai'].includes(x.name))continue;const file=path.join(dir,x.name);if(x.isDirectory())scan(file);else{const relative=path.relative(dist,file).replaceAll('\\','/');assets['/'+relative]={type:types[path.extname(file)]||'application/octet-stream',data:fs.readFileSync(file).toString('base64')};}}}scan(dist);
+const assetSource=`const workerAssets=${JSON.stringify(assets)};const decodedAssets=new Map();function serveAsset(request){const u=new URL(request.url);let p;try{p=decodeURIComponent(u.pathname);}catch{return new Response('Bad request',{status:400});}if(p==='/')p='/index.html';const a=workerAssets[p];if(!a)return new Response('Not found',{status:404});if(!decodedAssets.has(p))decodedAssets.set(p,Uint8Array.from(atob(a.data),c=>c.charCodeAt(0)));return new Response(request.method==='HEAD'?null:decodedAssets.get(p),{headers:{'Content-Type':a.type,'Cache-Control':'no-cache','X-Content-Type-Options':'nosniff'}});}`;
+const flatten=(file,keepDefault=false)=>{let s=fs.readFileSync(path.join(root,file),'utf8').replace(/^import .*?;\r?\n/gm,'');if(!keepDefault)s=s.replace(/^export /gm,'');return s;};
+const bundle=[flatten('dist/catalog.mjs'),flatten('dist/ai-contract.mjs'),flatten('worker/gemini.mjs'),flatten('worker/api.mjs'),assetSource,flatten('worker/index.mjs',true)].join('\n');
+fs.mkdirSync(path.join(dist,'server'),{recursive:true});fs.mkdirSync(path.join(dist,'.openai'),{recursive:true});fs.writeFileSync(path.join(dist,'server/index.js'),bundle);fs.writeFileSync(path.join(dist,'.openai/hosting.json'),JSON.stringify(hosting,null,2)+'\n');console.log(`Worker built: ${Object.keys(assets).length} assets, ${Buffer.byteLength(bundle)} bytes.`);

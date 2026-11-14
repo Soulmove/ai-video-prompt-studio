@@ -1,3 +1,5 @@
+import {validateVideoData} from './video-core.mjs';
+import {validateSavedAIData} from './ai-contract.mjs';
 import {sparsePrompt,commercePrompt,commerceDefaults} from './builder.mjs';
 import {GROUPS,TEMPLATES,VERSION} from './catalog.mjs';
 export const uid=()=>globalThis.crypto?.randomUUID?.()||`id-${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -149,7 +151,7 @@ export function validateImport(value){
  const p=value?.project||value;if(!p||typeof p!=='object'||Array.isArray(p))throw Error('不是有效项目对象。');
  if(p.version!==VERSION)throw Error(`暂不支持该项目版本（${p.version??'缺失'}）。`);
  const arrays=['shots','characters','scenes','props','references'];for(const k of arrays){if(!Array.isArray(p[k]))throw Error(`缺少 ${k} 列表。`);if(p[k].length>500)throw Error(`${k} 超过500项。`);const ids=new Set();for(const x of p[k]){if(!x||typeof x.id!=='string'||ids.has(x.id))throw Error(`${k} 中存在缺失或重复标识。`);ids.add(x.id);}}
- const walk=(x,depth=0)=>{if(depth>20)throw Error('数据层级过深。');if(!x||typeof x!=='object')return;for(const k of Object.keys(x)){if(['__proto__','constructor','prototype'].includes(k))throw Error('项目包含不允许的属性。');walk(x[k],depth+1);}};walk(p);
+ const walk=(x,depth=0)=>{if(depth>20)throw Error('数据层级过深。');if(!x||typeof x!=='object')return;for(const k of Object.keys(x)){if(['__proto__','constructor','prototype'].includes(k))throw Error('项目包含不允许的属性。');walk(x[k],depth+1);}};walk(p);validateVideoData(p);validateSavedAIData(p);
  if(typeof p.title!=='string'||!p.style||!p.camera)throw Error('项目基础设置不完整。');
  for(const s of p.shots){if(typeof s.action!=='string'||typeof s.title!=='string'||!Array.isArray(s.characterIds)||!Array.isArray(s.segments)||!Array.isArray(s.referenceIds)||!Array.isArray(s.micro)||!Number.isFinite(Number(s.duration)))throw Error('镜头数据格式不完整。');}
  for(const c of p.characters){if(typeof c.name!=='string'||!c.locks)throw Error('角色格式不完整。');}

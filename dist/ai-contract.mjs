@@ -10,11 +10,11 @@ const planObject=properties=>({type:'object',properties,required:Object.keys(pro
 const planStrings=keys=>Object.fromEntries(keys.map(k=>[k,planString]));
 const planEnum=k=>({type:'string',enum:['',...GROUPS[k].options.map(x=>x.id)]});
 export function planSchema(){
- const camera=planObject(Object.fromEntries(PLAN_CAMERA_KEYS.map(k=>[k,k==='orbit'?{type:'number',minimum:0,maximum:360}:k==='direction'?{type:'string',enum:['','cw','ccw']}:GROUPS[k]?planEnum(k):planString])));
+ const camera=planObject(Object.fromEntries(PLAN_CAMERA_KEYS.map(k=>[k,k==='orbit'?{type:'number'}:k==='direction'?{type:'string',enum:['','cw','ccw']}:GROUPS[k]?planEnum(k):planString])));
  const character=planObject({ref:planString,...planStrings(PLAN_CHAR_KEYS)});
  const scene=planObject({ref:planString,...Object.fromEntries(PLAN_SCENE_KEYS.map(k=>[k,GROUPS[k]?planEnum(k):planString]))});
- const shot=planObject({title:planString,duration:{type:'number',minimum:0.5,maximum:60},characterRefs:{type:'array',items:planString,maxItems:6},sceneRef:planString,action:planString,startState:planString,endState:planString,dialogue:planString,audio:planString,emotion:planEnum('emotion'),camera});
- return planObject({title:planString,logline:planString,style:planObject({look:planEnum('look'),medium:planEnum('medium'),genre:planEnum('genre'),color:planEnum('color'),texture:{type:'array',items:planEnum('texture')},custom:planString}),negativePrompts:{type:'array',items:planEnum('negative')},characters:{type:'array',items:character,maxItems:6},scenes:{type:'array',items:scene,maxItems:6},shots:{type:'array',items:shot,maxItems:8},commerce:planObject({...planStrings(PLAN_COMMERCE_KEYS),beats:{type:'array',items:planObject({title:planString,start:{type:'number'},end:{type:'number'},action:planString,voice:planString})}})});
+ const shot=planObject({title:planString,duration:{type:'number'},characterRefs:{type:'array',items:planString},sceneRef:planString,action:planString,startState:planString,endState:planString,dialogue:planString,audio:planString,emotion:planEnum('emotion'),camera});
+ return planObject({title:planString,logline:planString,style:planObject({look:planEnum('look'),medium:planEnum('medium'),genre:planEnum('genre'),color:planEnum('color'),texture:{type:'array',items:planEnum('texture')},custom:planString}),negativePrompts:{type:'array',items:planEnum('negative')},characters:{type:'array',items:character},scenes:{type:'array',items:scene},shots:{type:'array',items:shot},commerce:planObject({...planStrings(PLAN_COMMERCE_KEYS),beats:{type:'array',items:planObject({title:planString,start:{type:'number'},end:{type:'number'},action:planString,voice:planString})}})});
 }
 export function normalizePlan(raw){
  const fail=msg=>{throw Error('填写方案无效：'+msg);};

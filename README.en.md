@@ -1,12 +1,12 @@
 <div align="center">
 
-# Jingxu Workbench · AI Short-Film & Video Prompt Studio
+# AI Video Prompt Studio (镜序 · Jingxu)
 
-**A forward-looking, local-first, zero-dependency storyboard, continuity & AI video prompt studio**
+**A forward-looking AI video prompt generator, storyboard continuity director & short-film prompt workbench — local-first, zero external dependencies**
 
-[🌐 Live Static Demo (GitHub Pages)](https://soulmove.github.io/jingxu-workbench/) · [简体中文](README.md) · [English](README.en.md) · [Configuration Guide (EN)](docs/CONFIGURATION.en.md) · [全配置与使用手册 (中文)](docs/CONFIGURATION.zh-CN.md)
+[🌐 Live Static Demo (GitHub Pages)](https://soulmove.github.io/ai-video-prompt-studio/) · [简体中文](README.md) · [English](README.en.md) · [Configuration Guide (EN)](docs/CONFIGURATION.en.md) · [全配置与使用手册 (中文)](docs/CONFIGURATION.zh-CN.md)
 
-[![Live Demo](https://img.shields.io/badge/Demo-GitHub%20Pages-brightgreen?logo=githubpages)](https://soulmove.github.io/jingxu-workbench/)
+[![Live Demo](https://img.shields.io/badge/Demo-GitHub%20Pages-brightgreen?logo=githubpages)](https://soulmove.github.io/ai-video-prompt-studio/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-amber.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20-green.svg)](#quick-start)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-blue.svg)](#overview)
@@ -25,7 +25,7 @@
 
 Try the full workbench immediately in your browser—no installation, cloning, or backend required:
 
-👉 **Live GitHub Pages Demo**: https://soulmove.github.io/jingxu-workbench/
+👉 **Live GitHub Pages Demo**: https://soulmove.github.io/ai-video-prompt-studio/
 
 > **Notes on the Static Online Edition (GitHub Pages)**:
 > - **100% Client-Side Ready**: All `12` templates, Quick / Director / Commerce modes, character identity locks, 2D spatial lighting diagrams, multi-shot timeline & transitions (`6` categories / `110` options), `10` prompt output formats with `中 / EN` mapping, browser `IndexedDB` persistence, and `.jingxu.json` export/import run directly in your browser.
@@ -92,12 +92,12 @@ Here are the **five forward-looking bets** already built into **Jingxu Workbench
 > **Prerequisite for self-hosting**: **Node.js `>= 20`** (`npm install` is **not** required—zero third-party npm packages).
 
 ### 1. Instant Online Demo
-Open **https://soulmove.github.io/jingxu-workbench/** directly in your browser.
+Open **https://soulmove.github.io/ai-video-prompt-studio/** directly in your browser.
 
 ### 2. Local CLI (macOS / Linux / Windows)
 ```bash
-git clone https://github.com/Soulmove/jingxu-workbench.git
-cd jingxu-workbench
+git clone https://github.com/Soulmove/ai-video-prompt-studio.git
+cd ai-video-prompt-studio
 node server.mjs
 # or: npm start
 ```
@@ -110,7 +110,7 @@ Double-click **`启动镜序工作台.bat`** in the repository root.
 
 | Capability | GitHub Pages (Static) | Local `node server.mjs` | Cloudflare Workers (`dist/server/index.js`) |
 |---|---|---|---|
-| **Entry** | [Live Demo](https://soulmove.github.io/jingxu-workbench/) | `http://127.0.0.1:4173` | Your Workers domain |
+| **Entry** | [Live Demo](https://soulmove.github.io/ai-video-prompt-studio/) | `http://127.0.0.1:4173` | Your Workers domain |
 | **Templates / Storyboard / Prompts / JSON Import & Export** | ✅ Full support (`IndexedDB`) | ✅ Full support | ✅ Full support |
 | **Personal Google API (Browser Direct)** | ✅ Supported (in-memory only) | ✅ Supported | ✅ Supported |
 | **Same-Origin `/api/*` Server Relay & Env Fallback Key** | ❌ Static host has no `/api/*` | ✅ Supported (`local-preview` bridge) | ✅ Supported (rate-limited + 3xx-safe) |

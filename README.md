@@ -1,12 +1,12 @@
 <div align="center">
 
-# 镜序 · AI短剧提示词工作台 (Jingxu Director Workbench)
+# 镜序 · AI Video Prompt & Short-Film Studio（AI 视频与短剧提示词工作台）
 
-**超前一代导演级 AI 短剧 / 多镜头视频提示词工作台 · 本地优先 · 零外部依赖**
+**超前一代导演级 AI 视频提示词与多镜头分镜工作台（AI Video Prompt Studio · Storyboard Continuity · Local-First · Zero Dependencies）**
 
-[🌐 在线静态体验 (GitHub Pages)](https://soulmove.github.io/jingxu-workbench/) · [简体中文](README.md) · [English](README.en.md) · [全配置与使用手册](docs/CONFIGURATION.zh-CN.md) · [Configuration (EN)](docs/CONFIGURATION.en.md)
+[🌐 在线静态体验 (GitHub Pages)](https://soulmove.github.io/ai-video-prompt-studio/) · [简体中文](README.md) · [English](README.en.md) · [全配置与使用手册](docs/CONFIGURATION.zh-CN.md) · [Configuration (EN)](docs/CONFIGURATION.en.md)
 
-[![Live Demo](https://img.shields.io/badge/Demo-GitHub%20Pages-brightgreen?logo=githubpages)](https://soulmove.github.io/jingxu-workbench/)
+[![Live Demo](https://img.shields.io/badge/Demo-GitHub%20Pages-brightgreen?logo=githubpages)](https://soulmove.github.io/ai-video-prompt-studio/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-amber.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20-green.svg)](#快速开始本地与在线部署)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-blue.svg)](#核心看点与工程亮点)
@@ -25,7 +25,7 @@
 
 无需下载代码或安装任何环境，点击下方链接即可直接在浏览器里打开完整工作台：
 
-👉 **GitHub Pages 在线体验地址**：https://soulmove.github.io/jingxu-workbench/
+👉 **GitHub Pages 在线体验地址**：https://soulmove.github.io/ai-video-prompt-studio/
 
 > **在线体验版使用提示（纯静态托管模式）**：
 > - **开箱即用**：12 套故事/广告模板、快速/导演/电商三模式切换、角色与光影轴线编排、分镜时间轴、6 大类 110 项转场表、10 种提示词视图与 `中/EN` 导出、`IndexedDB` 自动草稿保存、`.jingxu.json` 导出与导入恢复——全部在你的浏览器本地直接运行，无需注册账号。
@@ -91,19 +91,19 @@
 > **本地运行仅需 Node.js `>= 20`，零第三方依赖，无需执行 `npm install`。**
 
 ### 方式一：直接使用 GitHub Pages 在线版
-打开 **https://soulmove.github.io/jingxu-workbench/** 即可在浏览器中使用。
+打开 **https://soulmove.github.io/ai-video-prompt-studio/** 即可在浏览器中使用。
 
 ### 方式二：Windows 本地一键启动
 ```bash
-git clone https://github.com/Soulmove/jingxu-workbench.git
-cd jingxu-workbench
+git clone https://github.com/Soulmove/ai-video-prompt-studio.git
+cd ai-video-prompt-studio
 ```
 然后直接双击根目录的 **`启动镜序工作台.bat`**，会自动在 `http://127.0.0.1:4173` 启动并打开浏览器。
 
 ### 方式三：macOS / Linux / Windows 命令行启动
 ```bash
-git clone https://github.com/Soulmove/jingxu-workbench.git
-cd jingxu-workbench
+git clone https://github.com/Soulmove/ai-video-prompt-studio.git
+cd ai-video-prompt-studio
 node server.mjs
 # 或
 npm start
@@ -114,7 +114,7 @@ npm start
 
 | 特性 | GitHub Pages 静态托管版 | 本地 `node server.mjs` | Cloudflare Workers 部署 (`dist/server/index.js`) |
 |---|---|---|---|
-| **访问方式** | [直接打开网页](https://soulmove.github.io/jingxu-workbench/) | `http://127.0.0.1:4173` | 你的 Workers 绑定域名 |
+| **访问方式** | [直接打开网页](https://soulmove.github.io/ai-video-prompt-studio/) | `http://127.0.0.1:4173` | 你的 Workers 绑定域名 |
 | **项目制作 / 模板 / 导出导入 / 本地存储** | ✅ 完整支持（浏览器 IndexedDB） | ✅ 完整支持 | ✅ 完整支持 |
 | **个人 Google API 浏览器直连** | ✅ 支持（密钥仅存内存） | ✅ 支持 | ✅ 支持 |
 | **同源 `/api/*` 服务器转发与站点公共 Key** | ❌ 静态托管无后端接口 | ✅ 支持（自带本地身份桥接） | ✅ 支持（带限流与重定向保护） |
@@ -140,7 +140,7 @@ npm start
 ## 工程结构
 
 ```text
-jingxu-workbench/
+ai-video-prompt-studio/
 ├─ server.mjs                 # Node.js 20+ 本地静态预览与 /api/* 桥接服务器（默认 127.0.0.1:4173）
 ├─ 启动镜序工作台.bat          # Windows 一键启动脚本
 ├─ package.json               # 无外部依赖，提供 start / test / check / build 脚本

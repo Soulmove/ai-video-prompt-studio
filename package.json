@@ -1,7 +1,25 @@
 {
-  "name": "jingxu-director-workbench",
-  "version": "1.7.0",
+  "name": "ai-video-prompt-studio",
+  "version": "1.8.0",
   "private": true,
+  "description": "AI Video Prompt & Storyboard Studio (Jingxu / 镜序): local-first, zero-dependency director prompt builder, shot timeline & Gemini BYOK planner.",
+  "homepage": "https://soulmove.github.io/ai-video-prompt-studio/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Soulmove/ai-video-prompt-studio.git"
+  },
+  "keywords": [
+    "ai-video",
+    "video-prompt",
+    "prompt-studio",
+    "prompt-generator",
+    "storyboard",
+    "ai-filmmaking",
+    "short-drama",
+    "gemini",
+    "local-first",
+    "zero-dependency"
+  ],
   "type": "module",
   "scripts": {
     "start": "node server.mjs",

@@ -33,6 +33,22 @@ Try the full workbench immediately in your browser—no installation, cloning, o
 
 ---
 
+## 🎬 Introducing Jingxu 2.0: CapCut / Jianying-Style Multi-Track NLE Prompt Editor
+
+Looking for a pure **manual-first, non-linear visual timeline editor** where you start directly from **`00:00` empty tracks without relying on AI**? Check out the sister **2.0 repository (`ai-video-prompt-editor`)**:
+
+- 🆕 **2.0 Open-Source Repo**: https://github.com/Soulmove/ai-video-prompt-editor
+- 🌐 **2.0 Live Online Demo**: https://soulmove.github.io/ai-video-prompt-editor/
+
+| Feature | **Jingxu 1.0 (This Repo · `ai-video-prompt-studio`)** | **[Jingxu 2.0 (NLE Timeline · `ai-video-prompt-editor`)](https://github.com/Soulmove/ai-video-prompt-editor)** |
+|---|---|---|
+| **Editing Paradigm** | 4-step structured storyboard wizard + optional 65K Gemini AI director | **CapCut / Jianying-style 3-pane NLE studio** (Program Monitor + Clip Bins + 5-Track Timeline) |
+| **Starting Point** | Starter templates + AI brief generator | **Strict `00:00` blank timeline start — 100% zero AI API required** |
+| **Multi-Track Control** | Dialogue & audio cues stored inside each shot card | **Parallel `E1 Adjust`, `V1 Video`, `T1 Dialogue (J/L-Cut)`, `A1 SFX`, `A2 Ducking BGM` tracks** |
+| **Seamless Migration** | Exports `.jingxu.json` project archives | **Native import of 1.0 `.jingxu.json`** — automatically splits shots, lines, SFX & BGM across 2.0 tracks |
+
+---
+
 ## 🔮 Ahead of Its Time: Key Highlights & 1–2 Year AI Outlook
 
 Most AI video generation tools today still operate like **single-shot slot machines**: once you move from one 5-second clip to a multi-shot narrative, characters drift in facial identity and wardrobe, lighting direction jumps randomly, held props vanish between cuts, and dialogue pacing rarely fits clip runtime.

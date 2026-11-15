@@ -20,14 +20,15 @@ test('selective application rejects missing dependencies without partially mutat
 test('new-project application preserves the source and copies creative output targets',()=>{
  const p=M.makeProject(),before=M.clone(p);p.format='16:9';const q=applyAIPlan(p,exampleAIPlan(),{asNew:true}).project;assert.notEqual(q.id,p.id);assert.equal(q.format,'16:9');assert.equal(q.shots.length,2);assert.equal(p.shots.length,before.shots.length);
 });
-test('model output rejects malformed references, poison keys, unknown vocabulary and excess duration',()=>{
+test('model output rejects malformed references, poison keys, unknown vocabulary and sub-0.5s duration, while allowing >60s shots',()=>{
  let q=exampleAIPlan();q.shots[0].characterRefs=['missing'];assert.throws(()=>normalizePlan(q),/未知角色/);
  q=exampleAIPlan();q.style.look='made-up';assert.throws(()=>normalizePlan(q),/未知选项/);
- q=exampleAIPlan();q.shots[0].duration=90;assert.throws(()=>normalizePlan(q),/时长/);
+ q=exampleAIPlan();q.shots[0].duration=0.4;assert.throws(()=>normalizePlan(q),/时长/);
+ q=exampleAIPlan();q.shots[0].duration=90;assert.equal(normalizePlan(q).shots[0].duration,90);
  assert.throws(()=>normalizePlan(JSON.parse('{"__proto__":{"polluted":true}}')),/不允许/);assert.equal({}.polluted,undefined);assert.equal(planSchema().properties.shots.type,'array');
 });
-test('only bounded text context is sent to AI, without uploaded reference bytes or video results',()=>{
- const p=M.makeProject();p.references=[{id:'r',data:'data:image/png;base64,SECRET'}];p.videoResults=[{url:'https://private.example/signed?token=SECRET'}];const text=JSON.stringify(contextForAI(p));assert.ok(!text.includes('SECRET'));assert.throws(()=>normalizePlanRequest({idea:'x',duration:20,shotCount:3}),/4/);assert.throws(()=>normalizePlanRequest({idea:'拍一段短片',duration:300,shotCount:3}),/时长/);
+test('only bounded text context is sent to AI without uploaded reference bytes, while >600s and >24-shot plans are accepted',()=>{
+ const p=M.makeProject();p.references=[{id:'r',data:'data:image/png;base64,SECRET'}];p.videoResults=[{url:'https://private.example/signed?token=SECRET'}];const text=JSON.stringify(contextForAI(p));assert.ok(!text.includes('SECRET'));assert.throws(()=>normalizePlanRequest({idea:'x',duration:20,shotCount:3}),/4/);assert.equal(normalizePlanRequest({idea:'拍一段长短片',duration:1800,shotCount:36}).duration,1800);assert.throws(()=>normalizePlanRequest({idea:'拍一段短片',duration:1,shotCount:4}),/0\.5秒/);
 });
 test('local video plans freeze the prompt and never become submitted or claim real progress',()=>{
  const p=M.makeBlankProject(),d=ensureVideoData(p);d.prompt='画面规格：9:16 · 4K · 15s\n\n她缓缓回头';d.duration=20;const job=createVideoPlan(p,d);assert.equal(job.status,'draft');assert.equal(job.remoteTaskId,null);assert.equal(job.submittedAt,null);assert.ok(job.prompt.startsWith('画幅目标：'));assert.ok(!job.prompt.includes('15s'));d.prompt='改变后的内容';assert.ok(!job.prompt.includes('改变后的内容'));p.videoJobs.push(job);assert.deepEqual(M.validateImport(p),p);
@@ -50,4 +51,14 @@ test('automatic filling only proceeds in the untouched originating project and a
 test('a new automatic project may start with independent assets when reuse is disabled',()=>{
  const p=M.makeProject();p.aiBrief={idea:'另一个故事',duration:20,shotCount:3,autoFill:true};p.characters[0].outfit='旧项目服装';const q=applyAIPlan(p,exampleAIPlan(),{asNew:true,reuseExistingAssets:false}).project;
  assert.equal(q.characters[0].outfit,'米白色棉麻衬衫，深色长裤');assert.equal(q.characters[0].locks.outfit,false);assert.equal(q.aiBrief.idea,'另一个故事');assert.equal(p.characters[0].outfit,'旧项目服装');
+});
+test('parseImportText restores wrapped and bare JSON backups as independent copies without double suffixing',()=>{
+ const p=M.makeProject();p.aiSuggestion={plan:exampleAIPlan(),origin:'demo',projectId:p.id,applied:false};
+ const wrapped='\uFEFF'+JSON.stringify({application:'镜序',exportedAt:new Date().toISOString(),project:p});
+ const first=M.parseImportText(wrapped);
+ assert.notEqual(first.id,p.id);assert.equal(first.title,p.title+' · 导入');assert.equal(first.aiSuggestion.projectId,first.id);assert.equal(first.shots.length,p.shots.length);
+ const second=M.parseImportText(JSON.stringify(first));
+ assert.notEqual(second.id,first.id);assert.equal(second.title,first.title);assert.ok(!second.title.endsWith(' · 导入 · 导入'));
+ assert.throws(()=>M.parseImportText(''),/选择项目文件/);
+ assert.throws(()=>M.parseImportText('{bad'),/有效的 JSON/);
 });

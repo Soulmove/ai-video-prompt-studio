@@ -27,7 +27,7 @@ test('concurrent calls for the same user are bounded and release after completio
  let resolve;const api=createAPI({fetcher:()=>new Promise(r=>resolve=r)}),env={GEMINI_API_KEY:'KEY'},first=api(req('/api/ai/plan',{method:'POST',body:payload}),env);await new Promise(r=>setTimeout(r,10));const second=await api(req('/api/ai/plan',{method:'POST',body:payload}),env);assert.equal(second.status,429);resolve(okResponse());assert.equal((await first).status,200);
 });
 test('oversized and malformed JSON are rejected before provider calls',async()=>{
- let calls=0;const api=createAPI({fetcher:async()=>{calls++;return okResponse();}}),headers={'oai-authenticated-user-id':'u','Origin':host,'Content-Type':'application/json'};let r=await api(new Request(host+'/api/ai/plan',{method:'POST',headers,body:'{bad'}),{GEMINI_API_KEY:'KEY'});assert.equal(r.status,400);r=await api(new Request(host+'/api/ai/plan',{method:'POST',headers,body:'x'.repeat(100000)}),{GEMINI_API_KEY:'KEY'});assert.equal(r.status,413);assert.equal(calls,0);
+ let calls=0;const api=createAPI({fetcher:async()=>{calls++;return okResponse();}}),headers={'oai-authenticated-user-id':'u','Origin':host,'Content-Type':'application/json'};let r=await api(new Request(host+'/api/ai/plan',{method:'POST',headers,body:'{bad'}),{GEMINI_API_KEY:'KEY'});assert.equal(r.status,400);r=await api(new Request(host+'/api/ai/plan',{method:'POST',headers,body:'x'.repeat(2100000)}),{GEMINI_API_KEY:'KEY'});assert.equal(r.status,413);assert.equal(calls,0);
 });
 test('personal API keys work without a site key, stay per-request, and are never returned',async()=>{
  const seen=[],env={};const api=createAPI({fetcher:async(url,options)=>{seen.push(options.headers['x-goog-api-key']);return okResponse();}});

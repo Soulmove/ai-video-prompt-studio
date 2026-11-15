@@ -18,7 +18,16 @@ This guide covers every runtime option, local server setting, Google Gemini API 
 
 ---
 
-## 1. Local Runtime Configuration (Node.js & Windows One-Click Launcher)
+## 1. Live Static Hosting (GitHub Pages) & Local Runtime
+
+### Online Static Edition (GitHub Pages)
+Live deployment URL: **https://soulmove.github.io/jingxu-workbench/** (served cleanly from the `gh-pages` branch root containing `dist/` static assets + `.nojekyll`).
+
+- **Static-Host Adaptation**: When the app receives a non-JSON `404`/`405` from `./api/config`, it automatically enters `staticHost` mode. All authoring views, templates, continuity validation, `中/EN` prompt export, `IndexedDB` persistence, and `.jingxu.json` import/export run 100% in the browser. For AI Brief generation on GitHub Pages, enter your personal Google Gemini key under **Service Connection** using **Browser Direct** mode (same-origin server relay requires self-hosting with Node.js or Cloudflare Workers).
+
+---
+
+## 1.5 Local Runtime Configuration (Node.js & Windows One-Click Launcher)
 
 Jingxu Workbench runs entirely on standard browser ES modules and Node.js built-in modules — **zero third-party runtime dependencies, no `npm install` needed**.
 

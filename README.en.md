@@ -2,13 +2,14 @@
 
 # Jingxu Workbench · AI Short-Film & Video Prompt Studio
 
-**A local-first, zero-dependency storyboard, continuity, and AI video prompt workbench (for Seedance, Kling, Runway, Sora, Veo, and commercial short-drama workflows)**
+**A forward-looking, local-first, zero-dependency storyboard, continuity & AI video prompt studio**
 
-[简体中文](README.md) · [English](README.en.md) · [Configuration Guide (EN)](docs/CONFIGURATION.en.md) · [全配置与使用手册 (中文)](docs/CONFIGURATION.zh-CN.md)
+[🌐 Live Static Demo (GitHub Pages)](https://soulmove.github.io/jingxu-workbench/) · [简体中文](README.md) · [English](README.en.md) · [Configuration Guide (EN)](docs/CONFIGURATION.en.md) · [全配置与使用手册 (中文)](docs/CONFIGURATION.zh-CN.md)
 
+[![Live Demo](https://img.shields.io/badge/Demo-GitHub%20Pages-brightgreen?logo=githubpages)](https://soulmove.github.io/jingxu-workbench/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-amber.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20-green.svg)](#quick-start)
-[![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-blue.svg)](#key-highlights)
+[![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-blue.svg)](#overview)
 
 <br>
 
@@ -20,139 +21,120 @@
 
 ---
 
-## Overview
+## 🌐 Live Online Experience
 
-When generating AI short dramas or multi-shot videos with vague one-line prompts, models frequently suffer from **character identity drift, sudden wardrobe swaps, broken shot continuity, mismatched dialogue timing, and uncontrollable camera pacing**.
+Try the full workbench immediately in your browser—no installation, cloning, or backend required:
 
-**Jingxu Workbench (镜序)** turns director craft into a structured, local-first studio covering **Characters → Visual Style & Texture → Scene & Motivated Lighting → Acting & Audio Timing → Multi-Shot Timeline → Camera Movement & Transitions → Continuity Validation**:
+👉 **Live GitHub Pages Demo**: https://soulmove.github.io/jingxu-workbench/
 
-- **Zero External Runtime Dependencies**: Built entirely with native browser ES Modules, standard CSS, and Node.js `>= 20` core APIs — clone and run immediately without `npm install`.
-- **Local-First & Portable Backups**: Projects persist in browser `IndexedDB` (`jingxu-studio`) and can be exported as `.jingxu.json` files or restored via **file picker, drag-and-drop, or raw JSON paste**.
-- **Optional BYOK AI Planning (Google Gemini API)**: Connect your own Gemini API key to stream structured storyboards, cast rosters, scenes, micro-acting, BGM cues, and camera choreography via SSE (`streamGenerateContent`). Keys stay strictly in page memory.
-- **Unrestricted Multi-Shot Pacing**: Choose AI-determined shot counts & durations or set explicit integer shot counts and multi-minute runtimes without arbitrary small caps, backed by **`27` visual style presets** (live-action reality, 90s retro HK cinema, Wong Kar-wai neon night, documentary, drama, anime, ink wash, etc.) and **`23` film/sensor textures**.
-- **Multi-View Prompt Engine & Continuity Checks**: Live-sync across **`10` output views** (full script, current shot, concise, per-second timeline, shot sequence, CSV shot table, first/last frames, asset mounts, generation/editing plan), bilingual curated term output (`中 / EN`), **`25` negative prompts**, **`110` transition options across `6` categories**, and automated consistency checks.
-
-> **UI Language Note**: The workbench UI is currently authored in Simplified Chinese (designed initially for Chinese short-drama & director workflows), while the prompt output panel includes a built-in **`EN`** toggle that translates curated cinematography, lighting, lens, movement, acting, and negative-prompt vocabulary into English while preserving user freeform names and dialogue.
+> **Notes on the Static Online Edition (GitHub Pages)**:
+> - **100% Client-Side Ready**: All `12` templates, Quick / Director / Commerce modes, character identity locks, 2D spatial lighting diagrams, multi-shot timeline & transitions (`6` categories / `110` options), `10` prompt output formats with `中 / EN` mapping, browser `IndexedDB` persistence, and `.jingxu.json` export/import run directly in your browser.
+> - **Using AI Brief Online**: Open **Service Connection** (`服务连接`), paste your own **Google Gemini API Key**, and use the default **Browser Direct (`浏览器直连`)** transport (keys stay solely in page memory; same-origin `/api/*` server relay requires running `node server.mjs` locally or deploying to Cloudflare Workers).
 
 ---
 
-## Quick Start
+## 🔮 Ahead of Its Time: Key Highlights & 1–2 Year AI Outlook
 
-> **Prerequisite**: **Node.js `>= 20`** (`npm install` is **not** required).
+Most AI video generation tools today still operate like **single-shot slot machines**: once you move from one 5-second clip to a multi-shot narrative, characters drift in facial identity and wardrobe, lighting direction jumps randomly, held props vanish between cuts, and dialogue pacing rarely fits clip runtime.
 
-### Option 1: Cross-Platform CLI (macOS / Linux / Windows)
+> **Why Jingxu Looks 1–2 Years Ahead of Current Video AI Models:**  
+> **The directorial granularity engineered into this workbench is deliberately ahead of what most current commercial video models can natively obey in one pass. Over the next 1–2 years—as long-context multi-shot video generation, native first/last-frame locking, joint audio-video synthesis, and controllable identity agents mature—AI video models capable of natively digesting every structured contract in this studio will emerge.**
 
+Here are the **five forward-looking bets** already built into **Jingxu Workbench**:
+
+1. **From Loose Text Prompts to Cross-Shot Director Continuity Contracts**
+   - Includes per-character locks (facial structure, hairstyle, wardrobe, voice), cross-shot start/end prop state inheritance (e.g., holding an unmarked letter at the end of Shot 1 carries into Shot 2), **Chain Last Frame (`chainLastFrame`)** toggle, and **Cut-Frame Boundary Inspection (`cutFrameCheck`)**.
+   - Even before every third-party generator natively enforces multi-shot keyframe memory, Jingxu keeps your continuity ledger coherent—and prepares structured rules ready for next-gen multi-shot models.
+
+2. **Sub-Shot `0.5s` Action Slices + Micro-Acting + Dialogue Lip-Sync Windows**
+   - Supports per-shot segmented action beats down to `0.5s`, micro-acting gaze/expression notes, Chinese/spoken-rate lip-sync time-window estimation, timed SFX cues (`soundCues`), and global vs. per-shot BGM ducking/silence flags.
+   - As multimodal joint audio-video generators arrive over the next 1–2 years, these structured timing blocks translate straight into native audiovisual timelines.
+
+3. **2D Spatial Blocking Diagram & Automated Cinematography Sanity Checks**
+   - Visual top-down blocking editor placing **subject, camera, and key light** on a shared 2D stage, alongside reusable custom camera preset libraries.
+   - Live rule checker catches impossible camera combinations (e.g., simultaneous Dolly vs. Zoom conflicts, pan moves on fully locked cameras, or dialogue word counts overflowing shot windows) before spending GPU credits.
+
+4. **Decoupled Generation Budget vs. Cut In/Out Points + 110 Transition Specs**
+   - Separates **planned raw generation duration**, **edit in/out trim points**, and a **`6`-category / `110`-option transition library** with overlap budgets and continuity parameters—ready for tomorrow's end-to-end "generate + auto-assemble cut" pipelines.
+
+5. **Model-Agnostic `65K`-Token Thinking AI Planner + Reserved Video API Architecture**
+   - Connect your own Gemini API key (`65,536` max output tokens over SSE streaming) to generate unrestricted multi-shot storyboards (or let AI auto-select shot counts and pacing) from a single sentence.
+   - An isolated **Video Studio (`Muse / Video API` placeholder)** already tracks frozen prompt snapshots, reference roles (`8 MB` local previews), and external HTTPS video previews—ready to plug into future video generation APIs without rewriting the workbench.
+
+---
+
+## Feature Breakdown (10 Studio Modules)
+
+<details open>
+<summary><strong>Click to expand / collapse full module overview</strong></summary>
+
+| Module | Capabilities |
+|---|---|
+| **1. Creative Home & 4 Entry Paths** | Mood concept hero, instant draft resume, one-sentence AI start, **`12` editable starter templates**, Commerce ad workflow, and an untouched zero-boilerplate blank start. |
+| **2. Quick / Director / Commerce Modes** | Lossless switching over the same project schema—hide complexity in Quick Mode, expose full continuity/camera locks in Director Mode, or tailor product hooks & ad beats in Commerce Mode. |
+| **3. AI Brief Director (`dist/ai-brief.mjs`)** | **`27` visual style presets** (live-action reality, 90s retro HK cinema, Wong Kar-wai neon night, documentary, theatrical drama, vertical short drama, Republic era, Japanese film, American noir, cyberpunk, Y2K CCD, 2D/3D anime, ink wash, watercolor, clay, pixel, game CG) + **`23` film/sensor textures**; unified or per-character ethnicity/face-tier/skin tuning; unrestricted shot counts or AI-auto pacing. |
+| **4. Character Profiles & Locks** | Multi-character cast cards, **16 facial feature combinations**, independent locks on appearance/hair/wardrobe/voice so presets or AI updates never clobber fixed traits, plus reusable character templates. |
+| **5. Scenes, Lighting & 2D Blocking** | Location, weather, time-of-day, key/fill lighting direction & quality, plus interactive 2D stage diagram for character, camera, and light positioning. |
+| **6. Cinematography & Reusable Presets** | Shot size, camera angle, framing, focal length look, movement type, orbit direction/angle, roll, zoom, focus, stabilization—save custom presets to reuse across projects. |
+| **7. Browser-Tab Storyboard & Timeline** | Instant tab switching per shot or full list view, drag/button reordering, dialogue-safe split & merge confirmation previews, ordered vs. free timelines, minimum `0.5s` granularity. |
+| **8. Micro-Acting, Dialogue & Audio** | Emotion/delivery presets, spoken language & voice type, word-count duration estimator, timed sound cues, and global/per-shot BGM rules. |
+| **9. Reference Assets & Video Plans** | Local image/audio/video attachment previews (up to `8 MB` suggested per file; bytes never sent to AI), explicit role/exclusion tags, unsubmitted video plan snapshots & safe external `https://` playback. |
+| **10. 10 Prompt Formats & JSON Backup** | Switch live across Full, Single Shot, Concise, Per-Second Timeline, Sequence, Shot Table (`CSV`), First/Last Frame stills, Asset Mounts, and Generation/Edit Plan; **`中 / EN`** curated term toggle; **`25` negative prompts**; TXT/CSV/JSON export plus **file / drag-and-drop / paste-JSON import**. |
+
+</details>
+
+> **UI Language Note**: The interactive web interface is written in Simplified Chinese, while the Prompt Output panel includes an **`EN`** button that converts curated filmmaking, lighting, lens, movement, acting, and negative-prompt phrases into English while keeping user-entered names and dialogue intact.
+
+---
+
+## Quick Start & Hosting Comparison
+
+> **Prerequisite for self-hosting**: **Node.js `>= 20`** (`npm install` is **not** required—zero third-party npm packages).
+
+### 1. Instant Online Demo
+Open **https://soulmove.github.io/jingxu-workbench/** directly in your browser.
+
+### 2. Local CLI (macOS / Linux / Windows)
 ```bash
 git clone https://github.com/Soulmove/jingxu-workbench.git
 cd jingxu-workbench
 node server.mjs
 # or: npm start
 ```
+Then open **`http://127.0.0.1:4173`** (⚠ always access over HTTP rather than `file://`, as ES modules and IndexedDB require HTTP).
 
-Open **`http://127.0.0.1:4173`** in your browser.
+### 3. Windows One-Click Launcher
+Double-click **`启动镜序工作台.bat`** in the repository root.
 
-### Option 2: Windows One-Click Launcher
+### Hosting Modes Compared
 
-Double-click **`启动镜序工作台.bat`** in the repository root to automatically locate Node.js, launch the local preview server on port `4173`, and open the workbench in your browser.
-
-> ⚠ Always open via `http://127.0.0.1:4173` (HTTP). Opening `dist/index.html` directly over `file://` prevents ES Module loading and IndexedDB persistence.
-
----
-
-## How to Use (5-Step Workflow)
-
-### 1. Pick a Starting Point
-From the creative home page, start with:
-- **AI Brief**: Enter a story idea or documentary concept (or open **AI填写** in the left sidebar for granular controls).
-- **Templates**: Load one of **`12` built-in narrative & commercial templates** and customize freely.
-- **Commerce Mode**: Structured workflow for hero product stills, lifestyle scenes, and hook-driven short video ads.
-- **Start from Scratch**: Clean blank project with zero injected boilerplate.
-
-### 2. (Optional) Connect Your Personal Google Gemini API Key
-1. Navigate to **创作资源 → 服务连接** (Service Connection) in the left sidebar.
-2. Paste your personal API key from [Google AI Studio](https://aistudio.google.com/docs/api-key). Default model ID is `gemini-4-hydrogen`, and can be changed to any Gemini model enabled on your project (e.g., `gemini-2.5-pro`, `gemini-2.5-flash`).
-3. Click **连接并开始填写** (Connect & Open AI Brief) to test access (`models/...`) without incurring generation usage yet.
-4. In **AI填写**, select visual style, film texture, shot count mode (`auto` or manual), frame-chaining (`chainLastFrame`), cut-frame inspection (`cutFrameCheck`), and cast/BGM preferences, then click generate:
-   - Plans stream over SSE (`maxOutputTokens: 65536`), strip internal thoughts, and pass strict schema/reference validation before touching your project.
-   - Disable auto-fill if you prefer to inspect diffs and selectively apply parts or save to a new project.
-
-### 3. Author Cast, Lighting & Storyboard Shots
-- **Characters**: Lock identity traits (face presets, hair, wardrobe, voice) so preset fills or AI updates preserve locked attributes.
-- **Scenes & Lighting**: Define location, weather, time of day, key-light direction, and adjust top-down character/camera/key-light spatial placement.
-- **Storyboard Tabs & Timeline**:
-  - Switch shots via browser-like tabs or inspect all shots in list mode; reorder, split, or merge safely (protecting authored dialogue windows).
-  - Configure shot duration (`>= 0.5s`), visible action beats, speaker/dialogue windows, sound effects, and BGM.
-  - Pick editing transitions between shots from **`6` categories / `110` transition options**.
-
-### 4. Inspect, Toggle `中 / EN`, and Export Prompts
-Use the right-hand **Prompt Output** panel to:
-- Switch across **`10` output views**: Full Prompt, Single Shot, Concise, Per-Second Timeline, Shot Sequence, Shot Table (`CSV`), First Frame Still, Last Frame Still, Asset Mount List, and Generation & Edit Plan.
-- Toggle **`EN`** to convert curated cinematography & negative vocabulary into English for international video generators, or open the **Manual Edit** view for final prompt polishing.
-- Review the **Checks** badge to catch timing overlaps, contradictory camera moves (e.g. dolly vs. zoom conflicts, locked-frame pans), missing scene/cast references, or out-of-window dialogue.
-
-### 5. Backup & Restore Projects (`.jingxu.json`)
-- **Export Project**: Click **导出项目** in the top bar to save a portable `.jingxu.json` project file (including attached local reference metadata/previews).
-- **Import Project**: Click **导入项目** in the top bar (or inside **我的项目**) to import via **file picker, drag-and-drop, or pasting JSON text**. Imports validate strictly and open with fresh unique IDs so your existing projects are never overwritten.
+| Capability | GitHub Pages (Static) | Local `node server.mjs` | Cloudflare Workers (`dist/server/index.js`) |
+|---|---|---|---|
+| **Entry** | [Live Demo](https://soulmove.github.io/jingxu-workbench/) | `http://127.0.0.1:4173` | Your Workers domain |
+| **Templates / Storyboard / Prompts / JSON Import & Export** | ✅ Full support (`IndexedDB`) | ✅ Full support | ✅ Full support |
+| **Personal Google API (Browser Direct)** | ✅ Supported (in-memory only) | ✅ Supported | ✅ Supported |
+| **Same-Origin `/api/*` Server Relay & Env Fallback Key** | ❌ Static host has no `/api/*` | ✅ Supported (`local-preview` bridge) | ✅ Supported (rate-limited + 3xx-safe) |
 
 ---
 
 ## Configuration Summary
 
-See **[`docs/CONFIGURATION.en.md`](docs/CONFIGURATION.en.md)** for full configuration options, security boundaries, and Cloudflare Workers setup.
+For complete documentation on ports, Google API direct vs. relay transport, `GEMINI_API_KEY` / `GEMINI_MODEL` environment variables, IndexedDB schemas, and Cloudflare Workers `wrangler.toml` setup, read:
+👉 **[`docs/CONFIGURATION.en.md`](docs/CONFIGURATION.en.md)** · **[`docs/CONFIGURATION.zh-CN.md`](docs/CONFIGURATION.zh-CN.md)**
 
-| Area | How to Configure | Notes |
+| Option | How to Set | Notes |
 |---|---|---|
-| Local Port | `PORT=8080 node server.mjs` | Binds only to `127.0.0.1` (default port `4173`) |
-| Personal Gemini Model & Channel | Workbench → Service Connection UI | API key stays in tab memory only; model & transport (`browser` direct vs `server` relay) save to `localStorage` |
-| Optional Server Fallback Key | Env vars `GEMINI_API_KEY`, `GEMINI_MODEL` | Read from `process.env` when no personal key is sent (**`server.mjs` does not auto-load `.env`**) |
-| Single-File Worker Build | `npm run build` | Bundles `23` static assets + API into `dist/server/index.js` |
-| Tests & Syntax Checks | `npm test` / `npm run check` | Runs `node --test` across `93` automated unit tests |
-
----
-
-## Repository Structure
-
-```text
-jingxu-workbench/
-├─ server.mjs                 # Zero-dependency Node.js 20+ preview & local API bridge (127.0.0.1:4173)
-├─ 启动镜序工作台.bat          # Windows one-click launch script
-├─ package.json               # Scripts (start / test / check / build), zero third-party deps
-├─ .env.example               # Optional environment variable reference
-├─ docs/
-│  ├─ CONFIGURATION.en.md       # Full English configuration & deployment guide
-│  └─ CONFIGURATION.zh-CN.md    # Full Chinese configuration & deployment guide
-├─ dist/
-│  ├─ index.html              # App entry shell & inline SVG icon symbols
-│  ├─ app.mjs                 # Workbench UI, 3-column layout, modals & interaction handlers
-│  ├─ experience.mjs          # Creative home page, step rail & idea templates
-│  ├─ ai-brief.mjs            # AI brief presets (27 visual styles, 23 textures, cast/BGM helpers)
-│  ├─ ai-contract.mjs         # AI request/response schema normalization & strict validation
-│  ├─ ai-planner.mjs          # Preview diffing & safe selective/new-project plan application
-│  ├─ google-provider.mjs     # Google Gemini SSE streaming, connection check & redacted diagnostics
-│  ├─ api-connection.mjs      # Credential trimming & client error classification
-│  ├─ catalog.mjs             # Bilingual film vocabulary, 12 templates, 110 transitions, 25 negatives
-│  ├─ model.mjs               # Timeline continuity, state inheritance, checks, prompt engine & import parser
-│  ├─ storage.mjs             # IndexedDB (jingxu-studio) + localStorage preferences/deletion guards
-│  ├─ video-core.mjs          # Local video plan snapshots & safe external URL preview checks
-│  └─ server/index.js         # Self-contained Cloudflare Workers ESM bundle generated by npm run build
-├─ worker/                    # Cloudflare Workers request router, rate limiter & dev fallback assets
-├─ scripts/build-worker.mjs   # Worker single-file ESM bundler
-└─ tests/                     # 10 test files / 93 Node.js unit tests
-```
-
----
-
-## Data Privacy & Scope Boundaries
-
-- **Local Persistence**: All projects remain in your browser's `IndexedDB`. Clearing browser site storage removes drafts, so regular `.jingxu.json` exports are recommended.
-- **API Key Isolation**: Personal keys remain strictly in memory (`personalAI.key`) and are cleared on reload or disconnect. Server relay mode transmits the key per request in `x-jingxu-api-key` without logging or following `3xx` redirects.
-- **Video Studio Scope**: The Video Studio tab organizes prompt payloads, saves local `"未提交"` (unsubmitted) plan snapshots, manages local reference assets (max `8 MB` preview per file), and safely previews external `https://` video links. Direct third-party video rendering/billing APIs are not connected yet and `/api/video/*` returns HTTP `501` intentionally to prevent accidental charges.
+| Custom Local Port | `PORT=8080 node server.mjs` | Binds exclusively to `127.0.0.1` (default `4173`) |
+| Personal Gemini Key & Model | Workbench → Service Connection | Default `gemini-4-hydrogen`; key lives in tab memory only |
+| Optional Server Fallback Env | `GEMINI_API_KEY`, `GEMINI_MODEL` | Read from `process.env`; **`server.mjs` does not auto-load `.env`** |
+| Single-File Worker Build | `npm run build` | Compiles `23` assets + API router to `dist/server/index.js` |
+| Tests & Syntax Checks | `npm test` / `npm run check` | Runs `93` automated unit tests via Node built-in `node:test` |
 
 ---
 
 ## Attributions & References
 
-Methodologies for shot fields, continuity locks, micro-acting, and commercial hooks drew inspiration from the following open-source projects (verified 2026-11-12). All UI, presets, rule checks, and implementation code were written independently without copying finished videos, images, or full prompt outputs:
+Methodologies for shot fields, continuity locks, micro-acting, and commercial script hooks drew inspiration from the following open-source repositories (verified 2026-11-12). UI, presets, rule checks, and runtime code are implemented independently:
 
 | Project | Referenced Concepts | License |
 |---|---|---|
@@ -170,4 +152,4 @@ Commercial structure references: `fal-ai-community/skills` (`commercial`), `xian
 ## License
 
 Released under the **[MIT License](LICENSE)**.  
-If **Jingxu Workbench** helps your AI filmmaking or prompt engineering workflow, please consider giving this repo a **Star ⭐**!
+If you believe structured director workflows are the missing bridge to next-generation multi-shot video AI, give **Jingxu Workbench** a **Star ⭐** to follow future model integrations!

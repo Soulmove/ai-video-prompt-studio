@@ -18,7 +18,16 @@
 
 ---
 
-## 1. 本地运行配置（Node.js / Windows 一键启动）
+## 1. 在线静态体验（GitHub Pages）与本地运行配置
+
+### 在线静态体验版（GitHub Pages）
+已托管至公开静态站点：**https://soulmove.github.io/jingxu-workbench/**（由独立 `gh-pages` 分支根目录直接发布 `dist/` 前端资产与 `.nojekyll`）。
+
+- **纯静态模式行为**：当网页检测 `./api/config` 返回非 JSON `404`/`405` 时，会自动进入 `staticHost` 纯静态模式——所有本地编辑、12 套模板、提示词输出、IndexedDB 存档与 `.jingxu.json` 导入导出均可离线式运行；如需使用 AI 自动填写，请在 **「服务连接」** 中填写个人 Google API Key 并使用默认的 **「浏览器直连」** 模式（纯静态托管无后端转发接口，因此不会支持「服务器转发」与站长默认密钥）。
+
+---
+
+## 1.5 本地运行配置（Node.js / Windows 一键启动）
 
 本工作台完全基于浏览器原生 ESM 与 Node.js 标准库实现，**零第三方运行时依赖，无需 `npm install`**。
 
